@@ -5,6 +5,7 @@ import {
   BarChart, Bar, XAxis, YAxis, Tooltip, ResponsiveContainer,
   PieChart, Pie, Cell, Legend
 } from 'recharts'
+import { exportClienteExcel, exportClientePDF, exportTodosExcel } from '../lib/exports'
 
 const STATUS_OPTIONS = ['Recebido', 'Em Preparação', 'Confirmado', 'Concluído']
 
@@ -231,22 +232,37 @@ export default function AdminPage() {
             </div>
 
             {/* Filtros */}
-            <div style={{ display: 'flex', flexWrap: 'wrap', gap: '8px', marginBottom: '20px' }}>
-              {['Todos', ...STATUS_OPTIONS].map((status) => (
+            {/* Filtros + exportação global */}
+            <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '20px', flexWrap: 'wrap', gap: '12px' }}>
+            <div style={{ display: 'flex', flexWrap: 'wrap', gap: '8px' }}>
+                {['Todos', ...STATUS_OPTIONS].map((status) => (
                 <button
-                  key={status}
-                  onClick={() => setFilterStatus(status)}
-                  style={{
+                    key={status}
+                    onClick={() => setFilterStatus(status)}
+                    style={{
                     padding: '6px 16px', borderRadius: '999px', fontSize: '13px',
                     border: `1px solid ${filterStatus === status ? 'var(--gold)' : 'var(--gold-light)'}`,
                     backgroundColor: filterStatus === status ? 'var(--gold)' : 'white',
                     color: filterStatus === status ? 'white' : 'var(--charcoal)',
                     cursor: 'pointer', transition: 'all 0.2s'
-                  }}
+                    }}
                 >
-                  {status}
+                    {status}
                 </button>
-              ))}
+                ))}
+            </div>
+            <button
+                onClick={() => exportTodosExcel(submissions)}
+                disabled={submissions.length === 0}
+                style={{
+                padding: '8px 18px', borderRadius: '10px', fontSize: '13px',
+                fontWeight: '500', cursor: submissions.length === 0 ? 'not-allowed' : 'pointer',
+                backgroundColor: submissions.length === 0 ? 'var(--gold-light)' : 'var(--gold)',
+                color: 'white', border: 'none', whiteSpace: 'nowrap'
+                }}
+            >
+                📊 Exportar Todos
+            </button>
             </div>
 
             {/* Lista */}
@@ -430,14 +446,41 @@ export default function AdminPage() {
               boxShadow: '-4px 0 24px rgba(0,0,0,0.1)'
             }}
           >
-            <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', marginBottom: '24px' }}>
-              <div>
+            <div style={{ marginBottom: '24px' }}>
+            <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', marginBottom: '16px' }}>
+                <div>
                 <h2 style={{ fontSize: '20px', color: 'var(--charcoal)', margin: '0 0 4px 0', fontFamily: 'Playfair Display, serif' }}>
-                  {selected.nome_noivo} & {selected.nome_noiva}
+                    {selected.nome_noivo} & {selected.nome_noiva}
                 </h2>
                 <p style={{ fontSize: '13px', color: 'var(--gray-mid)', margin: 0 }}>{formatDate(selected.data_evento)}</p>
-              </div>
-              <button onClick={() => setSelected(null)} style={{ fontSize: '20px', color: 'var(--gray-mid)', background: 'none', border: 'none', cursor: 'pointer' }}>✕</button>
+                </div>
+                <button onClick={() => setSelected(null)} style={{ fontSize: '20px', color: 'var(--gray-mid)', background: 'none', border: 'none', cursor: 'pointer' }}>✕</button>
+            </div>
+
+            {/* Botões de exportação */}
+            <div style={{ display: 'flex', gap: '8px' }}>
+                <button
+                onClick={() => exportClientePDF(selected)}
+                style={{
+                    flex: 1, padding: '9px 12px', borderRadius: '10px', fontSize: '12px',
+                    fontWeight: '500', cursor: 'pointer', transition: 'all 0.2s',
+                    backgroundColor: 'var(--gold)', color: 'white', border: 'none',
+                }}
+                >
+                📄 Exportar PDF
+                </button>
+                <button
+                onClick={() => exportClienteExcel(selected)}
+                style={{
+                    flex: 1, padding: '9px 12px', borderRadius: '10px', fontSize: '12px',
+                    fontWeight: '500', cursor: 'pointer', transition: 'all 0.2s',
+                    backgroundColor: 'white', color: 'var(--gold)',
+                    border: '1px solid var(--gold)',
+                }}
+                >
+                📊 Exportar Excel
+                </button>
+            </div>
             </div>
 
             <div style={{ marginBottom: '28px' }}>
