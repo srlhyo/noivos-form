@@ -62,6 +62,9 @@ h1, h2, h3 {
   .flower-deco {
     position: absolute !important;
   }
+  .stepper-wrap {
+    display: none !important;
+  }
 }
 
 /* ===== Alvos de toque confortáveis ===== */
