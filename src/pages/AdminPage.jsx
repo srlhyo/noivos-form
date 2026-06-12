@@ -686,12 +686,8 @@ export default function AdminPage() {
               }}
             >
               <div
-                style={{
-                  display: "flex",
-                  flexWrap: "wrap",
-                  gap: "8px",
-                  alignItems: "center",
-                }}
+                className="h-scroll"
+                style={{ gap: "8px", alignItems: "center", maxWidth: "100%" }}
               >
                 {["Todos", ...STATUS_OPTIONS].map((status) => (
                   <button

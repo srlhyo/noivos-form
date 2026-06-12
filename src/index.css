@@ -24,3 +24,48 @@ body {
 h1, h2, h3 {
   font-family: 'Playfair Display', serif;
 }
+
+/* ===== Scroll horizontal elegante (stepper, filtros) ===== */
+.h-scroll {
+  display: flex;
+  overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
+  scrollbar-width: none;        /* Firefox */
+  scroll-snap-type: x proximity;
+}
+.h-scroll::-webkit-scrollbar {
+  display: none;                /* Chrome/Safari */
+}
+.h-scroll > * {
+  scroll-snap-align: center;
+  flex-shrink: 0;
+}
+
+/* ===== Ajustes mobile ===== */
+@media (max-width: 600px) {
+  .form-card-body {
+    padding: 20px 16px !important;
+  }
+  .form-card-footer {
+    padding: 14px 16px !important;
+  }
+  .step-header {
+    flex-direction: column !important;
+    align-items: center !important;
+    text-align: center !important;
+    gap: 10px !important;
+  }
+  .page-title {
+    letter-spacing: 0.06em !important;
+  }
+}
+
+/* ===== Alvos de toque confortáveis ===== */
+@media (pointer: coarse) {
+  button {
+    min-height: 42px;
+  }
+  input, textarea {
+    font-size: 16px !important;  /* evita zoom automático no iOS */
+  }
+}
