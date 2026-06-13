@@ -191,7 +191,7 @@ function CoupleIcon() {
   );
 }
 
-// Bouquet densificado — versão melhorada com rosas maiores e cheias
+// Bouquet — imagem real do template
 function FlowerDecoration() {
   return (
     <img
@@ -203,7 +203,7 @@ function FlowerDecoration() {
         position: "fixed",
         top: "-30px",
         left: "-40px",
-        width: "min(380px, 34vw)",
+        width: "min(380px, 45vw)",
         height: "auto",
         pointerEvents: "none",
         zIndex: 0,
@@ -467,10 +467,7 @@ export default function FormPage() {
         );
       } else {
         if (invite) {
-          console.log("Invite ID:", invite.id);
-          console.log("Submission ID:", newSubmission.id);
-          const result = await markInviteUsed(invite.id, newSubmission.id);
-          console.log("markInviteUsed result:", result);
+          await markInviteUsed(invite.id, newSubmission.id);
           sessionStorage.removeItem("dlm_invite");
         }
         setSubmitted(true);
@@ -656,7 +653,7 @@ export default function FormPage() {
               by Luxury Events
             </p>
 
-            {/* "Questionário dos Noivos" com linhas laterais — maior espaço */}
+            {/* "Questionário dos Noivos" com linhas laterais simétricas */}
             <div
               style={{
                 display: "flex",
@@ -669,7 +666,8 @@ export default function FormPage() {
               <div
                 style={{
                   height: "1px",
-                  width: "48px",
+                  width: "clamp(28px, 8vw, 70px)",
+                  flexShrink: 0,
                   backgroundColor: "var(--gold-light)",
                 }}
               />
@@ -689,7 +687,8 @@ export default function FormPage() {
               <div
                 style={{
                   height: "1px",
-                  width: "48px",
+                  width: "clamp(28px, 8vw, 70px)",
+                  flexShrink: 0,
                   backgroundColor: "var(--gold-light)",
                 }}
               />
@@ -697,8 +696,58 @@ export default function FormPage() {
             <Ornament small />
           </div>
 
-          {/* Stepper */}
+          {/* Stepper — só desktop */}
           <ProgressStepper currentStep={currentStep} steps={formSteps} />
+
+          {/* Barra de progresso sticky — só mobile */}
+          <div className="sticky-progress">
+            <div
+              style={{
+                display: "flex",
+                justifyContent: "space-between",
+                marginBottom: "6px",
+              }}
+            >
+              <span
+                style={{
+                  fontSize: "11px",
+                  fontWeight: "600",
+                  color: "var(--gold)",
+                  textTransform: "uppercase",
+                  letterSpacing: "0.08em",
+                }}
+              >
+                {currentStep}/{totalSteps} · {step.title}
+              </span>
+              <span
+                style={{
+                  fontSize: "11px",
+                  color: "var(--gold)",
+                  fontWeight: "600",
+                }}
+              >
+                {percentage}%
+              </span>
+            </div>
+            <div
+              style={{
+                height: "4px",
+                borderRadius: "999px",
+                backgroundColor: "#F5ECD7",
+                overflow: "hidden",
+              }}
+            >
+              <div
+                style={{
+                  height: "100%",
+                  width: `${percentage}%`,
+                  backgroundColor: "var(--gold)",
+                  borderRadius: "999px",
+                  transition: "width 0.5s ease",
+                }}
+              />
+            </div>
+          </div>
 
           {/* Card */}
           <div
@@ -710,10 +759,8 @@ export default function FormPage() {
               boxShadow: "0 8px 48px rgba(0,0,0,0.08)",
             }}
           >
-            {/* Barra de progresso */}
-            <div 
-              className="progress-sticky"
-              style={{ padding: "14px 28px 12px" }}>
+            {/* Barra de progresso do card — escondida em mobile */}
+            <div className="card-progress" style={{ padding: "14px 28px 12px" }}>
               <div
                 style={{
                   display: "flex",
@@ -768,7 +815,7 @@ export default function FormPage() {
               className="form-card-body"
               style={{ padding: "20px 28px 24px" }}
             >
-              {/* Cabeçalho do passo — ornamento entre título e subtítulo */}
+              {/* Cabeçalho do passo */}
               <div
                 className="step-header"
                 style={{
@@ -806,13 +853,14 @@ export default function FormPage() {
                   >
                     {step.title}
                   </h2>
-                  {/* Ornamento — exactamente entre título e subtítulo */}
+                  {/* Ornamento entre título e subtítulo */}
                   <div
+                    className="step-ornament"
                     style={{
                       display: "flex",
                       alignItems: "center",
                       gap: "6px",
-                      margin: "0 0 5px 50px",
+                      margin: "0 0 5px 0",
                     }}
                   >
                     <div

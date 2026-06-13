@@ -1,5 +1,4 @@
 @import "tailwindcss";
-
 @import url('https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,600;1,400&family=Inter:wght@300;400;500;600&display=swap');
 
 :root {
@@ -41,6 +40,11 @@ h1, h2, h3 {
   flex-shrink: 0;
 }
 
+/* ===== Barra de progresso sticky — base (escondida em desktop) ===== */
+.sticky-progress {
+  display: none;
+}
+
 /* ===== Ajustes mobile ===== */
 @media (max-width: 600px) {
   .form-card-body {
@@ -50,34 +54,37 @@ h1, h2, h3 {
     padding: 14px 16px !important;
   }
   .step-header {
-    display: none !important;
     flex-direction: column !important;
     align-items: center !important;
     text-align: center !important;
     gap: 10px !important;
   }
+  .step-ornament {
+    justify-content: center !important;
+  }
   .page-title {
     letter-spacing: 0.06em !important;
-  }
-  .flower-deco {
-    position: absolute !important;
   }
   .stepper-wrap {
     display: none !important;
   }
-  .form-card {
-    overflow: visible !important;
+  .card-progress {
+    display: none !important;
   }
-  .progress-sticky {
+  .sticky-progress {
+    display: block;
     position: sticky;
     top: 0;
-    z-index: 10;
-    background: white;
-    border-radius: 20px 20px 0 0;
-    box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+    z-index: 20;
+    background: var(--cream);
+    padding: 10px 16px 8px;
+    margin: 0 -16px 12px;
+    border-bottom: 1px solid #F0E6D0;
   }
-  .form-card-footer {
-    border-radius: 0 0 20px 20px;
+  .flower-deco {
+    position: absolute !important;
+    width: 36vw !important;
+    opacity: 0.85 !important;
   }
 }
 
